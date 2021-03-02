@@ -14,7 +14,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/88250/lute"
+	"github.com/riverzhou/lute"
 )
 
 const spec = "commonmark-spec"

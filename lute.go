@@ -15,30 +15,30 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/parse"
-	"github.com/88250/lute/render"
-	"github.com/88250/lute/util"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/parse"
+	"github.com/riverzhou/lute/render"
+	"github.com/riverzhou/lute/util"
+	//"github.com/gopherjs/gopherjs/js"
 )
 
-const Version = "1.7.2"
+const Version = "1.107.2"
 
 // Lute 描述了 Lute 引擎的顶层使用入口。
 type Lute struct {
 	ParseOptions  *parse.Options  // 解析选项
 	RenderOptions *render.Options // 渲染选项
 
-	HTML2MdRendererFuncs               map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2Md 渲染器函数
-	HTML2VditorDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorDOM 渲染器函数
-	HTML2VditorIRDOMRendererFuncs      map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorIRDOM 渲染器函数
-	HTML2VditorIRBlockDOMRendererFuncs map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorIRBlockDOM 渲染器函数
-	HTML2VditorSVDOMRendererFuncs      map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorSVDOM 渲染器函数
+	//HTML2MdRendererFuncs               map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2Md 渲染器函数
+	//HTML2VditorDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorDOM 渲染器函数
+	//HTML2VditorIRDOMRendererFuncs      map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorIRDOM 渲染器函数
+	//HTML2VditorIRBlockDOMRendererFuncs map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorIRBlockDOM 渲染器函数
+	//HTML2VditorSVDOMRendererFuncs      map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 HTML2VditorSVDOM 渲染器函数
 	Md2HTMLRendererFuncs               map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2HTML 渲染器函数
-	Md2VditorDOMRendererFuncs          map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorDOM 渲染器函数
-	Md2VditorIRDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorIRDOM 渲染器函数
-	Md2VditorIRBlockDOMRendererFuncs   map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorIRBlockDOM 渲染器函数
-	Md2VditorSVDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorSVDOM 渲染器函数
+	//Md2VditorDOMRendererFuncs          map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorDOM 渲染器函数
+	//Md2VditorIRDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorIRDOM 渲染器函数
+	//Md2VditorIRBlockDOMRendererFuncs   map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorIRBlockDOM 渲染器函数
+	//Md2VditorSVDOMRendererFuncs        map[ast.NodeType]render.ExtRendererFunc // 用户自定义的 Md2VditorSVDOM 渲染器函数
 }
 
 // New 创建一个新的 Lute 引擎。
@@ -62,16 +62,16 @@ func New(opts ...ParseOption) (ret *Lute) {
 		opt(ret)
 	}
 
-	ret.HTML2MdRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.HTML2VditorDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.HTML2VditorIRDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.HTML2VditorIRBlockDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.HTML2VditorSVDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.HTML2MdRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.HTML2VditorDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.HTML2VditorIRDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.HTML2VditorIRBlockDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.HTML2VditorSVDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
 	ret.Md2HTMLRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.Md2VditorDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.Md2VditorIRDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.Md2VditorIRBlockDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
-	ret.Md2VditorSVDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.Md2VditorDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.Md2VditorIRDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.Md2VditorIRBlockDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
+	//ret.Md2VditorSVDOMRendererFuncs = map[ast.NodeType]render.ExtRendererFunc{}
 	return ret
 }
 
@@ -123,6 +123,7 @@ func (lute *Lute) TextBundleStr(name, markdown string, linkPrefixes []string) (t
 	return
 }
 
+/*
 // HTML2Text 将指定的 HTMl dom 转换为文本。
 func (lute *Lute) HTML2Text(dom string) string {
 	tree := lute.HTML2Tree(dom)
@@ -131,6 +132,7 @@ func (lute *Lute) HTML2Text(dom string) string {
 	}
 	return tree.Root.Text()
 }
+*/
 
 // RenderJSON 用于渲染 JSON 格式数据。
 func (lute *Lute) RenderJSON(markdown string) (json string) {
@@ -228,6 +230,7 @@ func (lute *Lute) Tree2HTML(tree *parse.Tree, options *render.Options) string {
 // ParseOption 描述了解析选项设置函数签名。
 type ParseOption func(lute *Lute)
 
+/*
 // 以下 Setters 主要是给 JavaScript 端导出方法用。
 
 func (lute *Lute) SetGFMTable(b bool) {
@@ -478,3 +481,7 @@ func (lute *Lute) SetJSRenderers(options map[string]map[string]*js.Object) {
 		}
 	}
 }
+*/
+
+//func main(){}
+

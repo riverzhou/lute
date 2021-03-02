@@ -12,15 +12,15 @@ package render
 
 import (
 	"bytes"
-	"github.com/88250/lute/html"
+	"github.com/riverzhou/lute/html"
 	"strconv"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
-	"github.com/88250/lute/parse"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
+	"github.com/riverzhou/lute/parse"
+	"github.com/riverzhou/lute/util"
 )
 
 // HtmlRenderer 描述了 HTML 渲染器。
@@ -38,10 +38,10 @@ func NewHtmlRenderer(tree *parse.Tree, options *Options) *HtmlRenderer {
 	ret.RendererFuncs[ast.NodeCodeSpanOpenMarker] = ret.renderCodeSpanOpenMarker
 	ret.RendererFuncs[ast.NodeCodeSpanContent] = ret.renderCodeSpanContent
 	ret.RendererFuncs[ast.NodeCodeSpanCloseMarker] = ret.renderCodeSpanCloseMarker
-	ret.RendererFuncs[ast.NodeCodeBlock] = ret.renderCodeBlock
+	//ret.RendererFuncs[ast.NodeCodeBlock] = ret.renderCodeBlock
 	ret.RendererFuncs[ast.NodeCodeBlockFenceOpenMarker] = ret.renderCodeBlockOpenMarker
 	ret.RendererFuncs[ast.NodeCodeBlockFenceInfoMarker] = ret.renderCodeBlockInfoMarker
-	ret.RendererFuncs[ast.NodeCodeBlockCode] = ret.renderCodeBlockCode
+	//ret.RendererFuncs[ast.NodeCodeBlockCode] = ret.renderCodeBlockCode
 	ret.RendererFuncs[ast.NodeCodeBlockFenceCloseMarker] = ret.renderCodeBlockCloseMarker
 	ret.RendererFuncs[ast.NodeMathBlock] = ret.renderMathBlock
 	ret.RendererFuncs[ast.NodeMathBlockOpenMarker] = ret.renderMathBlockOpenMarker

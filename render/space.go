@@ -14,7 +14,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/util"
 )
 
 // Space 会把 tokens 中的中西文之间加上空格。

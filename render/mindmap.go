@@ -12,12 +12,12 @@ package render
 
 import (
 	"bytes"
-	"github.com/88250/lute/html"
+	"github.com/riverzhou/lute/html"
 	"strings"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/parse"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/parse"
+	"github.com/riverzhou/lute/util"
 )
 
 // renderMindmap 用于将列表 Markdown 原文转为 ECharts 树图结构，提供给前端渲染脑图。

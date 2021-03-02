@@ -12,10 +12,10 @@ package parse
 
 import (
 	"bytes"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/util"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
 )
 
 func ParagraphContinue(p *ast.Node, context *Context) int {

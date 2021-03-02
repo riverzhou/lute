@@ -11,8 +11,8 @@
 package parse
 
 import (
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
 )
 
 func BlockquoteContinue(blockquote *ast.Node, context *Context) int {
