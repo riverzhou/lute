@@ -16,7 +16,7 @@ import (
 	"github.com/riverzhou/lute/html"
 	"github.com/riverzhou/lute/render"
 	"github.com/riverzhou/lute/util"
-	"github.com/gopherjs/gopherjs/js"
+	//"github.com/gopherjs/gopherjs/js"
 )
 
 func New(options map[string]map[string]*js.Object) *js.Object {

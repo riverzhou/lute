@@ -22,10 +22,10 @@ import (
 	"github.com/riverzhou/lute/lex"
 	"github.com/riverzhou/lute/util"
 
-	"github.com/alecthomas/chroma"
-	chromahtml "github.com/alecthomas/chroma/formatters/html"
-	chromalexers "github.com/alecthomas/chroma/lexers"
-	"github.com/alecthomas/chroma/styles"
+	//"github.com/alecthomas/chroma"
+	//chromahtml "github.com/alecthomas/chroma/formatters/html"
+	//chromalexers "github.com/alecthomas/chroma/lexers"
+	//"github.com/alecthomas/chroma/styles"
 )
 
 func (r *HtmlRenderer) renderCodeBlock(node *ast.Node, entering bool) ast.WalkStatus {
