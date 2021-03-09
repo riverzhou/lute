@@ -11,7 +11,7 @@
 package parse
 
 import (
-	"github.com/88250/lute/ast"
+	"github.com/riverzhou/lute/ast"
 )
 
 func ListItemContinue(listItem *ast.Node, context *Context) int {

@@ -11,10 +11,10 @@
 package test
 
 import (
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/util"
 	"testing"
 
-	"github.com/88250/lute"
+	"github.com/riverzhou/lute"
 )
 
 var mindmapTests = []parseTest{

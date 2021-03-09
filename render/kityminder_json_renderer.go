@@ -16,9 +16,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
-	"github.com/88250/lute/parse"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
+	"github.com/riverzhou/lute/parse"
 )
 
 // KityMinderJSONRenderer 描述了 KityMinder JSON 渲染器。

@@ -15,10 +15,10 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/parse"
-	"github.com/88250/lute/render"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/parse"
+	"github.com/riverzhou/lute/render"
+	"github.com/riverzhou/lute/util"
 	"github.com/gopherjs/gopherjs/js"
 )
 

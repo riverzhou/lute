@@ -13,7 +13,7 @@ package test
 import (
 	"testing"
 
-	"github.com/88250/lute"
+	"github.com/riverzhou/lute"
 )
 
 func TestCodeSyntaxHighlightDetectLang(t *testing.T) {

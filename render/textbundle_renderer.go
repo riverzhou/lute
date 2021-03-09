@@ -11,9 +11,9 @@
 package render
 
 import (
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/parse"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/parse"
+	"github.com/riverzhou/lute/util"
 	"strings"
 )
 

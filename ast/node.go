@@ -16,7 +16,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/util"
 )
 
 // Node 描述了节点结构。

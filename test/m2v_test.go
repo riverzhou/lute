@@ -11,10 +11,10 @@
 package test
 
 import (
-	"github.com/88250/lute/ast"
+	"github.com/riverzhou/lute/ast"
 	"testing"
 
-	"github.com/88250/lute"
+	"github.com/riverzhou/lute"
 )
 
 var md2VditorDOMTests = []parseTest{

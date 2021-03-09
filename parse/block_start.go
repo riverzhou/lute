@@ -13,8 +13,8 @@ package parse
 import (
 	"bytes"
 
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
 )
 
 // blockStartFunc 定义了用于判断块是否开始的函数签名。

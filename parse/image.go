@@ -11,8 +11,8 @@
 package parse
 
 import (
-	"github.com/88250/lute/ast"
-	"github.com/88250/lute/lex"
+	"github.com/riverzhou/lute/ast"
+	"github.com/riverzhou/lute/lex"
 )
 
 // parseBang 解析 !，可能是图片标记符开始 ![ 也可能是普通文本 !。

@@ -12,7 +12,7 @@ package parse
 
 import (
 	"bytes"
-	"github.com/88250/lute/ast"
+	"github.com/riverzhou/lute/ast"
 )
 
 func GitConflictContinue(gitConflictBlock *ast.Node, context *Context) int {

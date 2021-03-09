@@ -11,11 +11,11 @@
 package parse
 
 import (
-	"github.com/88250/lute/html"
+	"github.com/riverzhou/lute/html"
 	"unicode/utf8"
 
-	"github.com/88250/lute/lex"
-	"github.com/88250/lute/util"
+	"github.com/riverzhou/lute/lex"
+	"github.com/riverzhou/lute/util"
 )
 
 func (context *Context) parseInlineLinkDest(tokens []byte) (passed, remains, destination []byte) {
