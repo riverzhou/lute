@@ -257,6 +257,10 @@ func (r *FormatRenderer) renderTagCloseMarker(node *ast.Node, entering bool) ast
 }
 
 func (r *FormatRenderer) renderKramdownBlockIAL(node *ast.Node, entering bool) ast.WalkStatus {
+	if !r.Options.KramdownBlockIAL {
+		return ast.WalkContinue
+	}
+
 	if nil != node.Previous && ast.NodeListItem == node.Previous.Type {
 		return ast.WalkContinue
 	}
@@ -659,6 +663,20 @@ func (r *FormatRenderer) renderTable(node *ast.Node, entering bool) ast.WalkStat
 		for col := 0; col < len(cells[0]); col++ {
 			for row := 0; row < len(cells) && col < len(cells[row]); row++ {
 				cells[row][col].TableCellContentWidth = cells[row][col].TokenLen()
+				//自动添加空格会导致单元格宽度发生变化
+				if r.Options.AutoSpace {
+					ret := 0
+					//遍历字节点，将可能会多出来的空格计算出来
+					ast.Walk(cells[row][col], func(n *ast.Node, entering bool) ast.WalkStatus {
+						if !entering {
+							return ast.WalkContinue
+						}
+						//空格仅一个字节，可以直接计算长度
+						ret += len(r.Space(n.Tokens)) - len(n.Tokens)
+						return ast.WalkContinue
+					})
+					cells[row][col].TableCellContentWidth += ret
+				}
 				if maxWidth < cells[row][col].TableCellContentWidth {
 					maxWidth = cells[row][col].TableCellContentWidth
 				}
@@ -949,11 +967,6 @@ func (r *FormatRenderer) renderCodeSpan(node *ast.Node, entering bool) ast.WalkS
 
 func (r *FormatRenderer) renderCodeSpanOpenMarker(node *ast.Node, entering bool) ast.WalkStatus {
 	if entering {
-		if node.ParentIs(ast.NodeTableCell) && (bytes.Contains(node.Next.Tokens, []byte("|")) || bytes.Contains(node.Next.Tokens, []byte("`"))) {
-			r.WriteString("<code>")
-			return ast.WalkContinue
-		}
-
 		r.WriteByte(lex.ItemBacktick)
 		if 1 < node.Parent.CodeMarkerLen {
 			r.WriteByte(lex.ItemBacktick)
@@ -982,11 +995,6 @@ func (r *FormatRenderer) renderCodeSpanContent(node *ast.Node, entering bool) as
 
 func (r *FormatRenderer) renderCodeSpanCloseMarker(node *ast.Node, entering bool) ast.WalkStatus {
 	if entering {
-		if node.ParentIs(ast.NodeTableCell) && (bytes.Contains(node.Previous.Tokens, []byte("|")) || bytes.Contains(node.Previous.Tokens, []byte("`"))) {
-			r.WriteString("</code>")
-			return ast.WalkContinue
-		}
-
 		if 1 < node.Parent.CodeMarkerLen {
 			text := util.BytesToStr(node.Previous.Tokens)
 			lastc, _ := utf8.DecodeLastRuneInString(text)
@@ -1225,7 +1233,7 @@ func (r *FormatRenderer) renderBlockquote(node *ast.Node, entering bool) ast.Wal
 			blockquoteLines.Write(line)
 			blockquoteLines.WriteByte(lex.ItemNewline)
 		}
-		buf = blockquoteLines.Bytes()
+		buf = bytes.TrimSpace(blockquoteLines.Bytes())
 		writer.Reset()
 		writer.Write(buf)
 		r.NodeWriterStack[len(r.NodeWriterStack)-1].Write(writer.Bytes())
@@ -1388,7 +1396,11 @@ func (r *FormatRenderer) renderThematicBreak(node *ast.Node, entering bool) ast.
 		if node.ParentIs(ast.NodeTableCell) {
 			r.WriteString("<hr/>")
 		} else {
-			r.WriteString("---\n\n")
+			r.WriteString("---")
+			if r.withoutKramdownBlockIAL(node) {
+				r.WriteByte(lex.ItemNewline)
+				r.WriteByte(lex.ItemNewline)
+			}
 		}
 	}
 	return ast.WalkContinue

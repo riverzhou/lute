@@ -562,7 +562,9 @@ func (r *BaseRenderer) renderListStyle(node *ast.Node, attrs *[][]string) {
 func (r *BaseRenderer) tagSrcPath(tokens []byte) []byte {
 	if srcIndex := bytes.Index(tokens, []byte("src=\"")); 0 < srcIndex {
 		src := tokens[srcIndex+len("src=\""):]
-		src = src[:bytes.Index(src, []byte("\""))]
+		if 1 > len(bytes.ReplaceAll(src, util.CaretTokens, nil)) {
+			return tokens
+		}
 		targetSrc := r.LinkPath(src)
 		originSrc := string(targetSrc)
 		if bytes.HasPrefix(targetSrc, []byte("//")) {
@@ -628,6 +630,22 @@ func (r *BaseRenderer) NodeAttrsStr(node *ast.Node) (ret string) {
 	return
 }
 
+// languagesNoHighlight 中定义的语言不要进行代码语法高亮。这些代码块会在前端进行渲染，比如各种图表。
+var languagesNoHighlight = []string{"mermaid", "echarts", "abc", "graphviz", "mindmap", "flowchart", "plantuml"}
+
+func (r *BaseRenderer) NoHighlight(language string) bool {
+	if "" == language {
+		return false
+	}
+
+	for _, langNoHighlight := range languagesNoHighlight {
+		if language == langNoHighlight {
+			return true
+		}
+	}
+	return false
+}
+
 func RenderHeadingText(n *ast.Node) (ret string) {
 	buf := &bytes.Buffer{}
 	ast.Walk(n, func(n *ast.Node, entering bool) ast.WalkStatus {
@@ -657,12 +675,12 @@ func RenderHeadingText(n *ast.Node) (ret string) {
 				buf.WriteString("</em>")
 			} else {
 				if nil != n.Previous && ast.NodeInlineHTML == n.Previous.Type {
-					if bytes.HasPrefix(n.Previous.Tokens, []byte("<font ")) {
+					if !bytes.HasPrefix(n.Previous.Tokens, []byte("</")) {
 						buf.Write(n.Previous.Tokens)
 						buf.Write(html.EscapeHTML(n.Tokens))
-					}
-					if nil != n.Next && bytes.Equal(n.Next.Tokens, []byte("</font>")) {
-						buf.Write(n.Next.Tokens)
+					} else {
+						buf.Write(n.Previous.Tokens)
+						buf.Write(html.EscapeHTML(n.Tokens))
 					}
 				} else {
 					buf.Write(html.EscapeHTML(n.Tokens))

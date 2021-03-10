@@ -395,7 +395,7 @@ func (r *HtmlRenderer) renderBlockRefText(node *ast.Node, entering bool) ast.Wal
 
 func (r *HtmlRenderer) renderYamlFrontMatterCloseMarker(node *ast.Node, entering bool) ast.WalkStatus {
 	if entering {
-		r.Tag("/div", nil, false)
+		r.WriteString("</code></pre>")
 	}
 	return ast.WalkContinue
 }
@@ -410,7 +410,9 @@ func (r *HtmlRenderer) renderYamlFrontMatterContent(node *ast.Node, entering boo
 func (r *HtmlRenderer) renderYamlFrontMatterOpenMarker(node *ast.Node, entering bool) ast.WalkStatus {
 	if entering {
 		attrs := [][]string{{"class", "vditor-yml-front-matter"}}
-		r.Tag("div", attrs, false)
+		attrs = append(attrs, node.Parent.KramdownIAL...)
+		r.Tag("pre", attrs, false)
+		r.WriteString("<code class=\"language-yaml\">")
 	}
 	return ast.WalkContinue
 }
@@ -757,6 +759,10 @@ func (r *HtmlRenderer) renderBang(node *ast.Node, entering bool) ast.WalkStatus 
 func (r *HtmlRenderer) renderImage(node *ast.Node, entering bool) ast.WalkStatus {
 	if entering {
 		if 0 == r.DisableTags {
+			if style := node.IALAttr("parent-style"); "" != style {
+				r.Tag("span", [][]string{{"style", style}}, false)
+			}
+
 			r.WriteString("<img src=\"")
 			destTokens := node.ChildByType(ast.NodeLinkDest).Tokens
 			destTokens = r.LinkPath(destTokens)
@@ -784,6 +790,9 @@ func (r *HtmlRenderer) renderImage(node *ast.Node, entering bool) ast.WalkStatus
 			r.WriteString(" " + ial)
 		}
 		r.WriteString(" />")
+		if style := node.IALAttr("parent-style"); "" != style {
+			r.Tag("/span", nil, false)
+		}
 
 		if r.Options.Sanitize {
 			buf := r.Writer.Bytes()
@@ -1095,11 +1104,18 @@ func (r *HtmlRenderer) renderListItem(node *ast.Node, entering bool) ast.WalkSta
 		var attrs [][]string
 		r.handleKramdownBlockIAL(node)
 		attrs = append(attrs, node.KramdownIAL...)
-		if 3 == node.ListData.Typ && "" != r.Options.GFMTaskListItemClass &&
-			nil != node.FirstChild && (
-			(ast.NodeTaskListItemMarker == node.FirstChild.Type) ||
+		if 3 == node.ListData.Typ && "" != r.Options.GFMTaskListItemClass && nil != node.FirstChild &&
+			((ast.NodeTaskListItemMarker == node.FirstChild.Type) ||
 				(nil != node.FirstChild.FirstChild && ast.NodeTaskListItemMarker == node.FirstChild.FirstChild.Type)) {
-			attrs = append(attrs, []string{"class", r.Options.GFMTaskListItemClass})
+			taskListItemMarker := node.FirstChild.FirstChild
+			if nil == taskListItemMarker {
+				taskListItemMarker = node.FirstChild
+			}
+			taskClass := r.Options.GFMTaskListItemClass
+			if taskListItemMarker.TaskListItemChecked {
+				taskClass += " vditor-task--done"
+			}
+			attrs = append(attrs, []string{"class", taskClass})
 		}
 		r.Tag("li", attrs, false)
 	} else {
@@ -1155,20 +1171,4 @@ func (r *HtmlRenderer) handleKramdownBlockIAL(node *ast.Node) {
 		// 第一项必须是 ID
 		node.KramdownIAL[0][0] = r.Options.KramdownIALIDRenderName
 	}
-}
-
-// languagesNoHighlight 中定义的语言不要进行代码语法高亮。这些代码块会在前端进行渲染，比如各种图表。
-var languagesNoHighlight = []string{"mermaid", "echarts", "abc", "graphviz", "mindmap", "flowchart"}
-
-func noHighlight(language string) bool {
-	if "" == language {
-		return false
-	}
-
-	for _, langNoHighlight := range languagesNoHighlight {
-		if language == langNoHighlight {
-			return true
-		}
-	}
-	return false
 }

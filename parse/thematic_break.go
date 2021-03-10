@@ -13,7 +13,24 @@ package parse
 import (
 	"github.com/riverzhou/lute/lex"
 	"github.com/riverzhou/lute/util"
+	"github.com/riverzhou/lute/ast"
 )
+
+// 判断分隔线（--- ***）是否开始。
+func ThematicBreakStart(t *Tree, container *ast.Node) int {
+	if t.Context.indented {
+		return 0
+	}
+
+	if ok, caretTokens := t.parseThematicBreak(); ok {
+		t.Context.closeUnmatchedBlocks()
+		thematicBreak := t.Context.addChild(ast.NodeThematicBreak)
+		thematicBreak.Tokens = caretTokens
+		t.Context.advanceOffset(t.Context.currentLineLen-t.Context.offset, false)
+		return 2
+	}
+	return 0
+}
 
 func (t *Tree) parseThematicBreak() (ok bool, caretTokens []byte) {
 	markerCnt := 0

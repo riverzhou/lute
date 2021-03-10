@@ -17,6 +17,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/riverzhou/lute/util"
+	"github.com/riverzhou/lute/lex"
 )
 
 // Node 描述了节点结构。
@@ -257,7 +258,7 @@ func (n *Node) TokenLen() (ret int) {
 		if !entering {
 			return WalkContinue
 		}
-		ret += len(n.Tokens)
+		ret += lex.BytesShowLength(n.Tokens)
 		return WalkContinue
 	})
 	return
