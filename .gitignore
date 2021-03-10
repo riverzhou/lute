@@ -1,3 +1,4 @@
+*.wasm
 *.exe
 *.dll
 *.so
