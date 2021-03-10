@@ -11,8 +11,6 @@
 package parse
 
 import (
-	"bytes"
-
 	"github.com/riverzhou/lute/ast"
 )
 
